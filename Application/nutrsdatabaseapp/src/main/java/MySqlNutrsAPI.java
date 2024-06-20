@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 public class MySqlNutrsAPI implements nutrsAPI {
 
@@ -21,7 +22,43 @@ public class MySqlNutrsAPI implements nutrsAPI {
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
+    }
 
+    /***
+     * Reads from the CGM using the given statement
+     * 
+     * @param sql The querie to fetch cgms with
+     * @return a list of cgms according to the given query
+     */
+    private ArrayList<CGM> fetchCgms(String sql) {
+        ArrayList<CGM> cgms = new ArrayList<>();
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                int id = rs.getInt("cgm_id");
+                String firstName = rs.getString("cgm_first_name");
+                String lastName = rs.getString("cgm_last_name");
+                String email = rs.getString("cgm_email");
+                String discord = rs.getString("cgm_discord_username");
+                int maxPlayers = rs.getInt("max_players");
+
+                CGM cgm = new CGM(id, firstName, lastName, email, discord, maxPlayers);
+                cgms.add(cgm);
+            }
+
+            rs.close();
+            stmt.close();
+            return cgms;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public ArrayList<CGM> getAllCgms() {
+        return fetchCgms("SELECT * FROM CGM");
     }
 
     public void createMeeting(Meeting meeting) {

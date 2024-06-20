@@ -1,4 +1,5 @@
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class nutrsTest {
@@ -9,6 +10,12 @@ public class nutrsTest {
 
         Meeting m = new Meeting(Date.from(Instant.now()), "Test stuff");
 
-        api.createMeeting(m);
+        //api.createMeeting(m);
+
+        ArrayList<CGM> cgms = api.getAllCgms();
+
+        for (CGM cgm : cgms) {
+            System.out.println(cgm);
+        }
     }
 }
