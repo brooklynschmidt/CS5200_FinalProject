@@ -126,7 +126,7 @@ insert into genre values
 (39, 'Gothic Horror'),
 (40, 'Worldbuilding');
 
-select * from game_genre;
+# select * from game_genre;
 insert into game_genre values
 (1, 1), (1, 2),
 (2, 3), (2, 4),
@@ -167,18 +167,45 @@ insert into cgm values
     (3,
      'Oliver', 'Baer-Benson', 'Baer-benson.o@northeastern.edu', 'oliver', 8),
     (4,
-     'Payton', 'Taylor', 'taylor.pa@northeastern.edu', 'kale5248', 7);
+     'Payton', 'Taylor', 'taylor.pa@northeastern.edu', 'kale5248', 7),
+    (5,
+     'Ali', 'Eustice', 'eustice.a@northeastern.edu', 'ali.ria', 5),
+    (6,
+     'Jack', 'Price', 'price.jack@northeastern.edu', 'thirdprice', 4);
 
 # select * from cgm_pref_genre;
 insert into cgm_pref_genre values
     (1, 15), (1, 2),
     (2, 2), (2, 40),
     (3, 2), (3, 31), (3, 22),
-    (4, 39), (4, 9);
+    (4, 39), (4, 9),
+    (5, 1), (5, 14), (5, 18),
+    (6, 3), (6, 22), (6, 40);
 
 insert into cgm_preferred_game values
     (1, 8),
     (2, 17), (2, 8), (2, 28),
     (3, 28), (3, 8),
-    (4, 8);
+    (4, 8),
+    (5, 22), (5, 28),
+    (6, 8), (6, 17);
+
+-- SET UP MEETINGS
+# select * from meeting;
+insert into meeting values
+    (1, '2024-04-06', 'GM\'s Choice'),
+    (2, '2024-03-09', 'Horror Games');
+
+-- SET UP TABLES
+# select * from nutrs_table;
+insert into nutrs_table values
+    (1, 1, 3, 15, 4), # Oliver running Lancer
+    (2, 1, 2, 17, 5), # Audrija running MotW
+    (3, 1, 1, 4, 3),  # Rob running BitD
+
+    (4, 2, 6, 19, 4), # Jack running Paranoia
+    (6, 2, 4, 8, 3); # Payton running DnD5e
+
+
+
 
