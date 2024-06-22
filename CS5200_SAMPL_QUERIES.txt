@@ -3,7 +3,7 @@ use nutrs;
 select * from game;
 
 -- Which games do the club own physically
-select * from game
+select game_name from game
 where physical_copy = 1; 
 
 -- How many games of each genre are in the database
@@ -12,14 +12,25 @@ right join genre using (genre_id)
 group by genre_id
 order by num_in_genre desc;
 
+-- How many games of each system are in the database
+select system_name, count(*) as "num_in_system" 
+from game join nutrs_system using (system_id)
+group by system_name
+order by num_in_system desc;
+
 -- How many people have attended each meeting
 select meeting_date, sum(num_players) as "number_of_people_in_meeting"
 from nutrs_table join meeting using (meeting_id)
 group by meeting_id;
 
 -- How many people attend each meeting on average
-select avg(num_players) as "average_players_per_meeting"
-from nutrs_table;
+select avg(players_in_meeting) as "avg_players_in_meeting"
+from (
+	select sum(num_players) as "players_in_meeting"
+	from nutrs_table
+	group by meeting_id) as t;
+
+select meeting_id from nutrs_table group by meeting_id;
 
 -- Which tables have room for new players
 select table_id, cgm_first_name, cgm_last_name, cgm_email, cgm_discord_username 
@@ -28,6 +39,7 @@ join cgm using (cgm_id)
 where num_players < max_players;
 
 -- How many games is each cgm running
-select cgm_first_name, cgm_last_name, table_id, count(table_id) from nutrs_table
+select cgm_first_name, cgm_last_name, count(table_id) as "num_games" from nutrs_table
 right join cgm using (cgm_id)
-group by cgm_first_name, cgm_last_name, table_id;
+group by cgm_first_name, cgm_last_name
+order by num_games desc;
