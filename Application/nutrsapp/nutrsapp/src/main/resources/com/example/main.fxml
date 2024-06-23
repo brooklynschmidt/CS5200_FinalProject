@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/20.0.1">
+  <tabs>
+    <Tab fx:id="meetingTab" text="Meetings">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="newMeeting" mnemonicParsing="false" text="New Meeting" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="6.0" />
+                  <VBox fx:id="meetingList" layoutX="8.0" layoutY="41.0" prefHeight="332.0" prefWidth="592.0" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab fx:id="CGMTab" text="CGMs">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="newCGM" mnemonicParsing="false" text="New CGM" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="6.0" />
+                  <VBox fx:id="cgmList" layoutX="10.0" layoutY="51.0" prefHeight="322.0" prefWidth="593.0" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+      <Tab fx:id="gameTab" text="Games">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="newGame" mnemonicParsing="false" text="New Game" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="6.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
+                  <VBox fx:id="gameList" layoutX="10.0" layoutY="41.0" prefHeight="331.0" prefWidth="593.0" />
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+  </tabs>
+</TabPane>
