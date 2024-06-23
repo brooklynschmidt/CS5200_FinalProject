@@ -26,13 +26,13 @@ begin
     -- Check if the game already exists
     select game_id into game_id
     from game
-    where game_name = game_name;
+    where game_name = game_name
+    limit 1;
     
     -- If game doesn't exist, insert it
     if game_id is null then
-        insert into game (game_name, physical_copy, digital_copy)
-        values (game_name, 0, 0);
-        set game_id = LAST_INSERT_ID();
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Game does not exist.';
     end if;
 
     -- Insert table into nutrs_table
