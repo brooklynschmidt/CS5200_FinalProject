@@ -1,161 +1,161 @@
 use nutrs;
 
 DELIMITER //
-CREATE PROCEDURE create_meeting (
-    IN meeting_date DATE,
-    IN meeting_theme VARCHAR(500)
+create procedure create_meeting (
+    in meeting_date date,
+    in meeting_theme varchar(500)
 )
-BEGIN
-    INSERT INTO meeting (meeting_date, meeting_theme)
-    VALUES (meeting_date, meeting_theme);
-END //
+begin
+    insert into meeting (meeting_date, meeting_theme)
+    values (meeting_date, meeting_theme);
+end //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE add_table_to_meeting (
-    IN meeting_id INT,
-    IN cgm_id INT,
-    IN game_name VARCHAR(500),
-    IN num_players INT
+create procedure add_table_to_meeting (
+    in meeting_id int,
+    in cgm_id int,
+    in game_name varchar(500),
+    in num_players int
 )
-BEGIN
-    DECLARE game_id INT;
+begin
+	declare game_id int;
 
     -- Check if the game already exists
-    SELECT game_id INTO game_id
-    FROM game
-    WHERE game_name = game_name;
+    select game_id into game_id
+    from game
+    where game_name = game_name;
 
     -- If game doesn't exist, insert it
-    IF game_id IS NULL THEN
-        INSERT INTO game (game_name, physical_copy, digital_copy)
-        VALUES (game_name, 0, 0);
-        SET game_id = LAST_INSERT_ID();
-    END IF;
+    if game_id is null then
+        insert into game (game_name, physical_copy, digital_copy)
+        values (game_name, 0, 0);
+        set game_id = LAST_INSERT_ID();
+    end if;
 
     -- Insert table into nutrs_table
-    INSERT INTO nutrs_table (meeting_id, cgm_id, game_id, num_players)
-    VALUES (meeting_id, cgm_id, game_id, num_players);
-END //
+    insert into nutrs_table (meeting_id, cgm_id, game_id, num_players)
+    values (meeting_id, cgm_id, game_id, num_players);
+end //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE add_cgm (
-    IN cgm_first_name VARCHAR(500),
-    IN cgm_last_name VARCHAR(500),
-    IN cgm_email VARCHAR(500),
-    IN cgm_discord_username VARCHAR(500),
-    IN max_players INT
+create procedure add_cgm (
+    in cgm_first_name varchar(500),
+    in cgm_last_name varchar(500),
+    in cgm_email varchar(500),
+    in cgm_discord_username varchar(500),
+    in max_players int
 )
-BEGIN
-    INSERT INTO cgm (cgm_first_name, cgm_last_name, cgm_email, cgm_discord_username, max_players)
-    VALUES (cgm_first_name, cgm_last_name, cgm_email, cgm_discord_username, max_players);
-END //
+begin
+	insert intocgm (cgm_first_name, cgm_last_name, cgm_email, cgm_discord_username, max_players)
+    values (cgm_first_name, cgm_last_name, cgm_email, cgm_discord_username, max_players);
+end //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE add_game (
-    IN game_name VARCHAR(500),
-    IN publisher_name VARCHAR(500),
-    IN system_name VARCHAR(500),
-    IN physical_copy BOOL,
-    IN digital_copy BOOL
+create procedure add_game (
+    in game_name varchar(500),
+    in publisher_name varchar(500),
+    in system_name varchar(500),
+    in physical_copy bool,
+    in digital_copy bool
 )
-BEGIN
-    DECLARE publisher_id INT;
-    DECLARE system_id INT;
+begin
+    declare publisher_id int;
+    declare system_id int;
     
     -- Check if publisher exists, otherwise insert
-    SELECT publisher_id INTO publisher_id
-    FROM publisher
-    WHERE publisher_name = publisher_name
-    LIMIT 1;
+    select publisher_id into publisher_id
+    from publisher
+    where publisher_name = publisher_name
+    limit 1;
     
-    IF publisher_id IS NULL THEN
-        INSERT INTO publisher (publisher_name)
-        VALUES (publisher_name);
-        SET publisher_id = LAST_INSERT_ID();
-    END IF;
+    if publisher_id is null then
+		insert into publisher (publisher_name)
+        values (publisher_name);
+        set publisher_id = LAST_INSERT_ID();
+    end if;
     
     -- Check if system exists, otherwise insert
-    SELECT system_id INTO system_id
-    FROM nutrs_system
-    WHERE system_name = system_name
-    LIMIT 1;
+    select system_id into system_id
+    from nutrs_system
+    where system_name = system_name
+    limit 1;
     
-    IF system_id IS NULL THEN
-        INSERT INTO nutrs_system (system_name)
-        VALUES (system_name);
-        SET system_id = LAST_INSERT_ID();
-    END IF;
+    if system_id is null then
+        insert into nutrs_system (system_name)
+        values (system_name);
+        set system_id = LAST_INSERT_ID();
+    end if;
     
     -- Insert game
-    INSERT INTO game (game_name, publisher_id, system_id, physical_copy, digital_copy)
-    VALUES (game_name, publisher_id, system_id, physical_copy, digital_copy);
-END //
+    insert into game (game_name, publisher_id, system_id, physical_copy, digital_copy)
+    values (game_name, publisher_id, system_id, physical_copy, digital_copy);
+end //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE add_genre (
-    IN genre_name VARCHAR(500)
+create procedure add_genre (
+    in genre_name varchar(500)
 )
-BEGIN
-    DECLARE genre_id INT;
+begin
+    declare genre_id int;
 
     -- Check if the genre already exists
-    SELECT genre_id INTO genre_id
-    FROM genre
-    WHERE genre_name = genre_name
-    LIMIT 1;
+    select genre_id into genre_id
+    from genre
+    where genre_name = genre_name
+    limit 1;
 
     -- If genre doesn't exist, insert it
-    IF genre_id IS NULL THEN
-        INSERT INTO genre (genre_name)
-        VALUES (genre_name);
-        SELECT LAST_INSERT_ID() AS genre_id;
-    ELSE
-        SELECT genre_id;
-    END IF;
+    if genre_id is null then
+        insert into genre (genre_name)
+        values (genre_name);
+        select LAST_INSERT_ID() as genre_id;
+    else
+        select genre_id;
+    end if;
     
-END //
+end //
 DELIMITER ;
 
 
 DELIMITER //
-CREATE PROCEDURE add_game_genre (
-    IN game_name VARCHAR(500),
-    IN genre_name VARCHAR(500)
+create procedure add_game_genre (
+    in game_name varchar(500),
+    in genre_name varchar(500)
 )
-BEGIN
-    DECLARE game_id_found INT;
-    DECLARE genre_id_found INT;
+begin
+    declare game_id_found int;
+    declare genre_id_found int;
 
     -- Check if game exists
-    SELECT game_id INTO game_id_found
-    FROM game
-    WHERE game_name = game_name
-    LIMIT 1;
+    select game_id into game_id_found
+    from game
+    where game_name = game_name
+    limit 1;
 
     -- Check if genre exists
-    SELECT genre_id INTO genre_id_found
-    FROM genre
-    WHERE genre_name = genre_name
-    LIMIT 1;
+    select genre_id into genre_id_found
+    from genre
+    where genre_name = genre_name
+    limit 1;
 
     -- If game or genre does not exist, throw error
-    IF game_id_found IS NULL THEN
+    if game_id_found is null then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Game does not exist.';
-    END IF;
+    end if;
 
-    IF genre_id_found IS NULL THEN
+    if genre_id_found is null then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Genre does not exist.';
-    END IF;
+    end if;
 
     -- Insert into game_genre table
-    INSERT INTO game_genre (game_id, genre_id)
-    VALUES (game_id_found, genre_id_found);
+    insert into game_genre (game_id, genre_id)
+    values (game_id_found, genre_id_found);
 
 END //
 DELIMITER ;
