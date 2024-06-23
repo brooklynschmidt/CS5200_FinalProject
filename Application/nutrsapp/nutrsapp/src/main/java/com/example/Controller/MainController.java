@@ -47,6 +47,18 @@ public class MainController {
         api.connect("jdbc:mysql://localhost:3306/NUTRS?serverTimezone=EST5EDT",
                 "NUTRS", "NUTRS");
 
+        updateUI();
+
+        newMeeting.setOnMouseClicked(e -> newMeeting());
+        newCGM.setOnMouseClicked(e -> newCGM());
+        newGame.setOnMouseClicked(e -> newGame());
+    }
+
+    public void updateUI() {
+        meetingList.getChildren().clear();
+        cgmList.getChildren().clear();
+        gameList.getChildren().clear();
+
         ArrayList<Meeting> meetings = api.getAllMeetings();
 
         for (Meeting m : meetings) {
@@ -68,15 +80,23 @@ public class MainController {
             GameListItem gli = new GameListItem(g);
             gameList.getChildren().add(gli);
         }
+    }
 
-        newMeeting.setOnMouseClicked(e -> newMeeting());
-        newCGM.setOnMouseClicked(e -> newCGM());
-        newGame.setOnMouseClicked(e -> newGame());
+    public void callStoredProcedure(String sql) {
+        try {
+            api.callStoredProcedure(sql);
+        } catch (Exception ex) {
+
+        }
+    }
+
+    public int getCGMID(String firstName, String lastName) {
+        return api.getCGMID(firstName, lastName);
     }
 
     private void newMeeting() {
         try {
-            newMeetingController controller = new newMeetingController();
+            newMeetingController controller = new newMeetingController(this);
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newMeeting.fxml"));
             fxmlLoader.setController(controller);
 
@@ -86,13 +106,13 @@ public class MainController {
             stage.setTitle("NUTRS Database Application");
             stage.show();
         } catch (Exception e) {
-
+            System.out.println(e.getMessage());
         }
     }
 
     private void newCGM() {
         try {
-            newCGMController controller = new newCGMController();
+            newCGMController controller = new newCGMController(this);
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newCGM.fxml"));
             fxmlLoader.setController(controller);
 
@@ -108,7 +128,7 @@ public class MainController {
 
     private void newGame() {
         try {
-            newGameController controller = new newGameController();
+            newGameController controller = new newGameController(this);
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newGame.fxml"));
             fxmlLoader.setController(controller);
 

@@ -140,13 +140,16 @@ public class MySqlNutrsAPI implements nutrsAPI {
     }
 
     public int getPlayersInMeeting(Meeting m) {
-        String sql = "select sum(num_players) from nutrs_table join meeting using (meeting_id) where meeting_id = " + m.getID() + " group by meeting_id";
+        String sql = "select sum(num_players) from nutrs_table join meeting using (meeting_id) where meeting_id = "
+                + m.getID() + " group by meeting_id";
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
-            rs.next();
-            int numPlayers =  rs.getInt("sum(num_players)");
+            int numPlayers = 0;
+            if (rs.next()) {
+                numPlayers = rs.getInt("sum(num_players)");
+            }
 
             rs.close();
             stmt.close();
@@ -158,10 +161,41 @@ public class MySqlNutrsAPI implements nutrsAPI {
         }
     }
 
+    public void callStoredProcedure(String sql) {
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            rs.close();
+            stmt.close();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
     public ArrayList<Table> getTablesInMeeting(Meeting m) {
         return fetchTables(
                 "select * from nutrs_table join game using (game_id) join cgm using (cgm_id) where meeting_id ="
                         + m.getID());
+    }
+
+    public int getCGMID(String firstName, String lastName) {
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT cgm_id FROM cgm WHERE cgm_first_name = '" + firstName
+                    + "' and cgm_last_name = '" + lastName + "'");
+
+            int id = -1;
+            if (rs.next()) {
+                id = rs.getInt("cgm_id");
+            }
+
+            rs.close();
+            stmt.close();
+            return id;
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return -1;
+        }
     }
 
     public ArrayList<CGM> getAllCgms() {

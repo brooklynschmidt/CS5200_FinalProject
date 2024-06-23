@@ -24,6 +24,12 @@ public class newCGMController {
     @FXML
     private Button confirm;
 
+    public MainController controller;
+
+    public newCGMController(MainController _controller) {
+        this.controller = _controller;
+    }
+
     @FXML
     public void initialize() {
         confirm.setOnMouseClicked(e -> createNewCGM(firstNameInput.getText(), lastNameInput.getText(),
@@ -31,7 +37,9 @@ public class newCGMController {
     }
 
     private void createNewCGM(String firstName, String lastName, String email, String discord, String maxPlayers) {
-        // TODO: Call stored procedure
+        controller.callStoredProcedure("CALL add_cgm('" + firstName + "', '" + lastName + "', '" + email + "', '"
+                + discord + "', " + maxPlayers + ")");
+        controller.updateUI();
         Stage stage = (Stage) confirm.getScene().getWindow();
         stage.close();
     }

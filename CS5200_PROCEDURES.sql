@@ -1,5 +1,6 @@
 use nutrs;
 
+drop procedure if exists create_meeting;
 DELIMITER //
 create procedure create_meeting (
     in meeting_date date,
@@ -11,6 +12,7 @@ begin
 end //
 DELIMITER ;
 
+drop procedure if exists add_table_to_meeting;
 DELIMITER //
 create procedure add_table_to_meeting (
     in meeting_id int,
@@ -25,7 +27,7 @@ begin
     select game_id into game_id
     from game
     where game_name = game_name;
-
+    
     -- If game doesn't exist, insert it
     if game_id is null then
         insert into game (game_name, physical_copy, digital_copy)
@@ -39,6 +41,7 @@ begin
 end //
 DELIMITER ;
 
+drop procedure if exists add_cgm;
 DELIMITER //
 create procedure add_cgm (
     in cgm_first_name varchar(500),
@@ -48,11 +51,12 @@ create procedure add_cgm (
     in max_players int
 )
 begin
-	insert intocgm (cgm_first_name, cgm_last_name, cgm_email, cgm_discord_username, max_players)
+	insert into cgm (cgm_first_name, cgm_last_name, cgm_email, cgm_discord_username, max_players)
     values (cgm_first_name, cgm_last_name, cgm_email, cgm_discord_username, max_players);
 end //
 DELIMITER ;
 
+drop procedure if exists add_game;
 DELIMITER //
 create procedure add_game (
     in game_name varchar(500),
@@ -95,6 +99,7 @@ begin
 end //
 DELIMITER ;
 
+drop procedure if exists add_genre;
 DELIMITER //
 create procedure add_genre (
     in genre_name varchar(500)
@@ -120,7 +125,7 @@ begin
 end //
 DELIMITER ;
 
-
+drop procedure if exists add_game_genre;
 DELIMITER //
 create procedure add_game_genre (
     in game_name varchar(500),
@@ -174,4 +179,3 @@ select * from nutrs_table;
 select * from publisher;
 select * from genre;
 select * from game_genre;
-

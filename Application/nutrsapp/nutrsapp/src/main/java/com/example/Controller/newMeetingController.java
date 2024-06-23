@@ -15,13 +15,20 @@ public class newMeetingController {
     @FXML
     private Button confirm;
 
+    private MainController controller;
+
+    public newMeetingController(MainController _controller) {
+        this.controller = _controller;
+    }
+
     @FXML
     public void initialize() {
         confirm.setOnMouseClicked(e -> createNewMeeting(dateInput.getText(), themeInput.getText()));
     }
 
     private void createNewMeeting(String date, String theme) {
-        // TODO: Call stored procedure
+        controller.callStoredProcedure("CALL create_meeting('" + date + "', '" + theme + "');");
+        controller.updateUI();
         Stage stage = (Stage) confirm.getScene().getWindow();
         stage.close();
     }

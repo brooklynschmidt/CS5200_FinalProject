@@ -18,7 +18,7 @@
             <Insets left="6.0" top="6.0" />
          </VBox.margin>
       </Label>
-      <Label text="CGM">
+      <Label text="CGM First Name">
          <font>
             <Font size="16.0" />
          </font>
@@ -26,7 +26,20 @@
             <Insets left="6.0" top="10.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="cgmInput">
+      <TextField fx:id="cgmFirstNameInput">
+         <VBox.margin>
+            <Insets left="6.0" right="6.0" />
+         </VBox.margin>
+      </TextField>
+      <Label fx:id="cgmLastName" text="CGM Last Name">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="6.0" right="6.0" top="10.0" />
+         </VBox.margin>
+      </Label>
+      <TextField fx:id="cgmLastNameInput">
          <VBox.margin>
             <Insets left="6.0" right="6.0" />
          </VBox.margin>

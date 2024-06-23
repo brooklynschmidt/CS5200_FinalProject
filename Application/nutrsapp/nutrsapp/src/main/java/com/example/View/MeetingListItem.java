@@ -70,9 +70,9 @@ public class MeetingListItem extends HBox {
 
     private void newTable() {
         try {
-            newTableController controller = new newTableController(meeting.getID());
+            newTableController Tcontroller = new newTableController(meeting.getID(), controller);
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newTable.fxml"));
-            fxmlLoader.setController(controller);
+            fxmlLoader.setController(Tcontroller);
 
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();

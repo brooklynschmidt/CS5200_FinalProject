@@ -22,6 +22,12 @@ public class newGameController {
     @FXML
     private Button confirm;
 
+    private MainController controller;
+
+    public newGameController(MainController _controller) {
+        this.controller = _controller;
+    }
+
     @FXML
     public void initialize() {
         confirm.setOnMouseClicked(e -> createNewGame(nameInput.getText(), publisherInput.getText(),
@@ -29,7 +35,9 @@ public class newGameController {
     }
 
     private void createNewGame(String name, String publisher, String system, boolean physical, boolean digital) {
-        // TODO: Call stored procedure
+        controller.callStoredProcedure("CALL add_game('" + name + "', '" + publisher + "', '" + system + "', "
+                + physical + ", " + digital + ");");
+        controller.updateUI();
         Stage stage = (Stage) confirm.getScene().getWindow();
         stage.close();
     }
